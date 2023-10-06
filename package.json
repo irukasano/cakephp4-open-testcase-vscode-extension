@@ -1,0 +1,40 @@
+{
+  "name": "cakephp4-open-testcase",
+  "publisher": "sano",
+  "displayName": "cakephp4-open-testcase",
+  "description": "",
+  "version": "1.0.0",
+  "displayName": "cakephp4-open-testcase",
+  "description": "Find the test code for the currently edited Class in tests/TestCase (following the CakePHP 4 standard conventions) and open it in a vertically split editing window.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [{
+      "command": "cakephp4-open-testcase.openTestCase",
+      "title": "Open TestCase",
+      "category": "CakePHP4 TestCase"
+    }]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.83.0",
+    "@types/mocha": "^10.0.2",
+    "@types/node": "18.x",
+    "eslint": "^8.50.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2",
+    "@vscode/test-electron": "^2.3.4"
+  }
+}
