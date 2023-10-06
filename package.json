@@ -1,14 +1,17 @@
 {
   "name": "cakephp4-open-testcase",
-  "publisher": "sano",
+  "publisher": "irukasystem",
   "displayName": "cakephp4-open-testcase",
   "description": "",
   "version": "1.0.0",
   "displayName": "cakephp4-open-testcase",
   "description": "Find the test code for the currently edited Class in tests/TestCase (following the CakePHP 4 standard conventions) and open it in a vertically split editing window.",
-  "version": "0.0.1",
   "engines": {
     "vscode": "^1.83.0"
+  },
+  "repository": {
+    "type": "git",
+    "url" : "https://v8.googlecode.com/svn/trunk/"
   },
   "categories": [
     "Other"
