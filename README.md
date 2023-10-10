@@ -8,6 +8,12 @@ CakePHP4 では src/Controller 配下のクラスのテストケースは tests/
 
 ## Release Notes
 
+### 1.0.1
+
+* TestCase はエディタグループ２で、下に開くようにした
+* エディタグループ２がある状態で、TestCase を開くときにエディタグループ１にフォーカスがあっても、エディタグループ２に開くようにした
+* TestCase でなければエディタグループ１に開くようにした
+
 ### 1.0.0
 
 Initial release.

@@ -5,7 +5,17 @@ const fs = require('fs');
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+	let openTestCase = function(filename){
+		vscode.window.showTextDocument(vscode.Uri.file(filename), {
+			preview: false, 
+			viewColumn: vscode.ViewColumn.Two
+		}).then( function(editor) {
+			//vscode.commands.executeCommand('workbench.action.editorLayoutTwoRows');
+			vscode.commands.executeCommand('workbench.action.moveActiveEditorGroupDown');
+		});
+	};
 
+	// openTestCase イベントでは、現在のファイル名をもとに TestCase を開く
 	let disposable = vscode.commands.registerCommand('cakephp4-open-testcase.openTestCase', function () {
 		let currentTextEditor = vscode.window.activeTextEditor;
 		if ( typeof currentTextEditor == "undefined"){
@@ -30,24 +40,33 @@ function activate(context) {
 		// ファイルが存在するか確認する。なければ終了
 		// できれば bake するか confirm したいけど..
 		if ( ! fs.existsSync(testCaseFilename)){
-			//vscode.window.showInformationMessage('Hello World from cakephp4-open-testcase!');
 			vscode.window.showWarningMessage('TestCase file not found: ' + testCaseFilename);
 			return;
 		}
 
 		// TestCase ファイルが存在する場合は、縦分割して下に TestCase ファイルを表示する
-		// ※本当は自動的に下に開きたかったができないぽい
-		// `"workbench.editor.openSideBySideDirection": "down"` とすることで下に開くが、
-		// すべてのファイルが下に開くのでいまいち
-		vscode.window.showTextDocument(vscode.Uri.file(testCaseFilename), {
-			preview: false, 
-			viewColumn: vscode.ViewColumn.Beside
-		});
+		// 開いたあとに２行表示にする
+		openTestCase(testCaseFilename);
 		//vscode.window.showInformationMessage('TestCase opened: ' + testCaseFilename);
 
 	});
-
 	context.subscriptions.push(disposable);
+
+	// ファイルを開くとき、TestCase ファイルはエディタグループ２に開く
+	vscode.workspace.onDidOpenTextDocument(function (document) {
+		let currentFilename = document.fileName;
+		console.log('Opening filename: ' + currentFilename);
+		// このファイル名が TestCase かどうかを判定する
+		if ( ! currentFilename.match(/Test\.php$/) ){
+			// TestCase ではない場合はくエディタグループ１に開く
+			vscode.commands.executeCommand('workbench.action.moveEditorToFirstGroup');
+		} else {
+			// TestCase の場合はエディタグループ２に開く
+			vscode.commands.executeCommand('workbench.action.moveEditorToLastGroup');
+			//openTestCase(currentFilename);
+		}
+	});
+
 }
 
 // This method is called when your extension is deactivated

@@ -1,10 +1,8 @@
 {
   "name": "cakephp4-open-testcase",
   "publisher": "irukasystem",
-  "displayName": "cakephp4-open-testcase",
-  "description": "",
-  "version": "1.0.0",
-  "displayName": "cakephp4-open-testcase",
+  "displayName": "CakePHP4 open TestCase",
+  "version": "1.0.1",
   "description": "Find the test code for the currently edited Class in tests/TestCase (following the CakePHP 4 standard conventions) and open it in a vertically split editing window.",
   "engines": {
     "vscode": "^1.83.0"
@@ -16,7 +14,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:php"
+  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [{
