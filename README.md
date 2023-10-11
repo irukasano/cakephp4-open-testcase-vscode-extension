@@ -6,7 +6,15 @@ CakePHP4 では src/Controller 配下のクラスのテストケースは tests/
 テストケースの命名ルールがきちんと決まっているのに、実装のたびにいちいちファイル名を指定して開くのは面倒なので、
 `> Open TestCase` でテストケースを別のエディタグループで開くようにしました。
 
+## Contribution
+
+https://github.com/irukasano/cakephp4-open-testcase-vscode-extension
+
 ## Release Notes
+
+### 1.0.2
+
+* TestCase がエディタグループ２で開いたあとすぐに閉じてしまう問題を修正した
 
 ### 1.0.1
 

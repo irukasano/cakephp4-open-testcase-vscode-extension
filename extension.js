@@ -62,7 +62,7 @@ function activate(context) {
 			vscode.commands.executeCommand('workbench.action.moveEditorToFirstGroup');
 		} else {
 			// TestCase の場合はエディタグループ２に開く
-			vscode.commands.executeCommand('workbench.action.moveEditorToLastGroup');
+			vscode.commands.executeCommand('workbench.action.moveEditorToSecondGroup');
 			//openTestCase(currentFilename);
 		}
 	});
