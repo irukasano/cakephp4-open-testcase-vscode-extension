@@ -47,7 +47,6 @@ function activate(context) {
 		// TestCase ファイルが存在する場合は、縦分割して下に TestCase ファイルを表示する
 		// 開いたあとに２行表示にする
 		openTestCase(testCaseFilename);
-		//vscode.window.showInformationMessage('TestCase opened: ' + testCaseFilename);
 
 	});
 	context.subscriptions.push(disposable);
@@ -61,8 +60,9 @@ function activate(context) {
 			// TestCase ではない場合はくエディタグループ１に開く
 			vscode.commands.executeCommand('workbench.action.moveEditorToFirstGroup');
 		} else {
-			// TestCase の場合はエディタグループ２に開く
-			vscode.commands.executeCommand('workbench.action.moveEditorToSecondGroup');
+			// TestCase の場合はエディタグループ２（下のグループ）に開く
+			//vscode.commands.executeCommand('workbench.action.moveEditorToSecondGroup');
+			vscode.commands.executeCommand('workbench.action.moveEditorToBelowGroup');
 			//openTestCase(currentFilename);
 		}
 	});
