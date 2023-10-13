@@ -5,6 +5,7 @@ const fs = require('fs');
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+
 	let openTestCase = function(filename){
 		vscode.window.showTextDocument(vscode.Uri.file(filename), {
 			preview: false, 
@@ -14,6 +15,18 @@ function activate(context) {
 			vscode.commands.executeCommand('workbench.action.moveActiveEditorGroupDown');
 		});
 	};
+
+	let isTarget = function(filename){
+		return filename.match(/\.php$/);
+	}
+
+	let isTestCase = function(filename){
+		return filename.match(/Test\.php$/);
+	}
+
+	let isFixture = function(filename){
+		return filename.match(/Fixture\.php$/);
+	}
 
 	// openTestCase イベントでは、現在のファイル名をもとに TestCase を開く
 	let disposable = vscode.commands.registerCommand('cakephp4-open-testcase.openTestCase', function () {
@@ -25,9 +38,12 @@ function activate(context) {
 
 		let currentFilename = currentTextEditor.document.fileName;
 		console.log('Current filename: ' + currentFilename);
+		if (! isTarget(currentFilename) ){
+			return;
+		}
 
 		// 現在のファイルが TestCase であれば処理しない
-		if ( currentFilename.match(/Test\.php$/) ){
+		if ( isTestCase(currentFilename) ){
 			vscode.window.showInformationMessage('Current file is TestCase.');
 			return;
 		}
@@ -55,14 +71,18 @@ function activate(context) {
 	vscode.workspace.onDidOpenTextDocument(function (document) {
 		let currentFilename = document.fileName;
 		console.log('Opening filename: ' + currentFilename);
-		// このファイル名が TestCase かどうかを判定する
-		if ( ! currentFilename.match(/Test\.php$/) ){
+		if (! isTarget(currentFilename) ){
+			return;
+		}
+
+		// このファイル名が TestCase, Fixture かどうかを判定する
+		if ( ! isTestCase(currentFilename) && ! isFixture(currentFilename)){
 			// TestCase ではない場合はくエディタグループ１に開く
 			vscode.commands.executeCommand('workbench.action.moveEditorToFirstGroup');
 		} else {
 			// TestCase の場合はエディタグループ２（下のグループ）に開く
 			//vscode.commands.executeCommand('workbench.action.moveEditorToSecondGroup');
-			vscode.commands.executeCommand('workbench.action.moveEditorToBelowGroup');
+			vscode.commands.executeCommand('workbench.action.moveEditorToLastGroup');
 			//openTestCase(currentFilename);
 		}
 	});
