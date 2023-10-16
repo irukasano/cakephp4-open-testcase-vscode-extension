@@ -4,13 +4,20 @@
 
 CakePHP4 では src/Controller 配下のクラスのテストケースは tests/TestCase/Controller にあります。
 テストケースの命名ルールがきちんと決まっているのに、実装のたびにいちいちファイル名を指定して開くのは面倒なので、
-`> Open TestCase` でテストケースを別のエディタグループで開くようにしました。
+`> Open TestCase` でテストケースを２番目のエディタグループで下に開くようにしました。
+
+また、テストケースで`> Open Fixture` とすると、`protected $fixtures` で定義されている Fixture を
+選択して開くことができます。これも２番目のエディタグループで下に開きます。
 
 ## Contribution
 
 https://github.com/irukasano/cakephp4-open-testcase-vscode-extension
 
 ## Release Notes
+
+### 1.0.5
+
+* `Open Fxiture` を追加
 
 ### 1.0.4
 

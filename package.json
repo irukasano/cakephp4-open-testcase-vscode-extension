@@ -2,7 +2,7 @@
   "name": "cakephp4-open-testcase",
   "publisher": "irukasystem",
   "displayName": "CakePHP4 open TestCase",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Find the test code for the currently edited Class in tests/TestCase (following the CakePHP 4 standard conventions) and open it in a vertically split editing window.",
   "engines": {
     "vscode": "^1.83.0"
@@ -19,11 +19,18 @@
   ],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "cakephp4-open-testcase.openTestCase",
-      "title": "Open TestCase",
-      "category": "CakePHP4 TestCase"
-    }]
+    "commands": [
+      {
+        "command": "cakephp4-open-testcase.openTestCase",
+        "title": "Open TestCase",
+        "category": "CakePHP4 TestCase"
+      },
+      {
+        "command": "cakephp4-open-testcase.openFixture",
+        "title": "Open Fixture",
+        "category": "CakePHP4 TestCase"
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
