@@ -5,22 +5,30 @@ const fs = require('fs');
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+	let editorGroupCount = 0;
 
-	let moveToTestCaseEditorGroup = function(){
-		// 現在エディタグループ２が存在しているか確認するなければ作成する
-		if ( editorGroupCount < 2 ){
-			vscode.commands.executeCommand('workbench.action.editorLayoutTwoRows');
-		}
-		// TestCase の場合はエディタグループ２（下のグループ）に開く
-		vscode.commands.executeCommand('workbench.action.moveEditorToLastGroup');
+	let getEditorGroupCount = function(){
+		editorGroupCount = vscode.window.tabGroups.all.length;
+		console.log('Tab groups: ' + editorGroupCount);
+		return editorGroupCount;
 	}
 
-	let openInSecondEditorGroup = function(filename){
-		vscode.workspace.openTextDocument(vscode.Uri.file(filename)).then( function(document) {
-			vscode.window.showTextDocument(document).then( function(editor) {
-				moveToTestCaseEditorGroup();
+	let moveToTestCaseEditorGroup = function(document){
+		// 現在エディタグループ２が存在しているか確認するなければ作成する
+		editorGroupCount = getEditorGroupCount();
+		if ( editorGroupCount < 2 ){
+			vscode.commands.executeCommand('workbench.action.editorLayoutTwoRows').then(function(){
+				vscode.window.showTextDocument(document, {preview: false, viewColumn: vscode.ViewColumn.Two});
 			});
-		});
+		} else {
+			// TestCase の場合はエディタグループ２（下のグループ）に開く
+			vscode.window.showTextDocument(document, {preview: false, viewColumn: vscode.ViewColumn.Two});
+		}
+	}
+
+	let openTestCase = function(filename){
+		// open しておけば、onDidOpenTextDocument でエディタグループを移動する
+		vscode.workspace.openTextDocument(vscode.Uri.file(filename));
 	};
 
 	let isTarget = function(filename){
@@ -34,8 +42,6 @@ function activate(context) {
 	let isFixture = function(filename){
 		return filename.match(/Fixture\.php$/);
 	}
-
-	let editorGroupCount = vscode.window.visibleTextEditors.length;
 
 	/*
 	 * openTestCase イベントでは、現在のファイル名をもとに TestCase を開く
@@ -73,14 +79,21 @@ function activate(context) {
 
 		// TestCase ファイルが存在する場合は、縦分割して下に TestCase ファイルを表示する
 		// 開いたあとに２行表示にする
-		openInSecondEditorGroup(testCaseFilename);
+		openTestCase(testCaseFilename);
 
 	});
 	context.subscriptions.push(disposable);
 
 	vscode.window.onDidChangeVisibleTextEditors(function () {
-		editorGroupCount = vscode.window.visibleTextEditors.length;
+		editorGroupCount = getEditorGroupCount();
 	});
+
+	/*
+	vscode.window.onDidChangeTabGroups(function () {
+		editorGroupCount = vscode.window.tabGroups.all.length;
+		console.log('Tab groups: ' + editorGroupCount);
+	});
+	*/
 
 	// ファイルを開くとき、TestCase ファイルはエディタグループ２に開く
 	vscode.workspace.onDidOpenTextDocument(function (document) {
@@ -88,14 +101,15 @@ function activate(context) {
 		if (! isTarget(currentFilename) ){
 			return;
 		}
-		console.log('Opening filename: ' + currentFilename);
+		console.log('Opened filename: ' + currentFilename);
 
 		// このファイル名が TestCase, Fixture かどうかを判定する
 		if ( ! isTestCase(currentFilename) && ! isFixture(currentFilename)){
 			// TestCase ではない場合はくエディタグループ１に開く
+			console.log('Not TestCase or Fixture. Open in editor group 1.');
 			vscode.commands.executeCommand('workbench.action.moveEditorToFirstGroup');
 		} else {
-			moveToTestCaseEditorGroup();
+			moveToTestCaseEditorGroup(document);
 		}
 	});
 
@@ -151,7 +165,7 @@ function activate(context) {
 				return;
 			}
 
-			openInSecondEditorGroup(fixtureFilename);
+			openTestCase(fixtureFilename);
 		});
 
 	});

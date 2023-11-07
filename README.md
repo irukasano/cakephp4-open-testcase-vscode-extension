@@ -15,6 +15,10 @@ https://github.com/irukasano/cakephp4-open-testcase-vscode-extension
 
 ## Release Notes
 
+### 1.0.6
+
+* 二回目以降の `Open TestCase` の挙動がおかしかったので修正
+
 ### 1.0.5
 
 * `Open Fxiture` を追加
